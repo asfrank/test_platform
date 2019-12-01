@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block base %}
+    <div class="container"  style="width: 326px">
+      <form class="form-signin" action="{% url 'login' %}" method="post">
+        <h2 class="form-signin-heading" style="text-align: center">接口测试平台</h2>
+        <label for="inputEmail" class="sr-only">账号</label>
+        <input type="text" id="inputEmail" name="username" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        <div style="color: red">{{ error }}</div>
+        {% csrf_token %}
+      </form>
+    </div>
+{% endblock %}
+

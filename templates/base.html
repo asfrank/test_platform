@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>测试平台</title>
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://v3.bootcss.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    {% block custom_css %}
+    {% endblock %}
+</head>
+<body>
+{% block base %}
+{% endblock %}
+{% block custom_js %}
+{% endblock %}
+</body>
+</html>
