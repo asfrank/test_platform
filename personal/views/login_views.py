@@ -5,6 +5,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.contrib import auth
 
+from personal.models.project import Project
+
 class IndexView(View):
     def get(self, request):
         return render(request, "index.html")
@@ -32,16 +34,6 @@ class LogoutView(View):
         auth.logout(request)
         return HttpResponseRedirect("/")
 
-
-class ProjectView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        return render(request, "project.html")
-
-class ModuleView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        return render(request, "module.html")
 
 
 

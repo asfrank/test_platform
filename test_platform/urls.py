@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from personal.views import LoginView, IndexView, LogoutView, ProjectView, ModuleView
+from personal.views.login_views import LoginView, IndexView, LogoutView
+from personal.views import project_views
+from personal.views import module_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +27,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name="index"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
-    path('project/', ProjectView.as_view(), name="project"),
-    path('module/', ModuleView.as_view(), name="module"),
+    path('project/', project_views.ProjectView.as_view(), name="project"),
+    path('project/add_project/', project_views.AddProjectView.as_view(), name="add_project"),
+    path('module/', module_views.ModuleView.as_view(), name="module"),
 ]

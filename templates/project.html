@@ -41,31 +41,47 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-          <h2 class="sub-header">项目列表</h2>
+          <!--项目列表展示-->
+          {% if type == "list" %}
+          <h2 class="sub-header">项目列表
+              <button type="button" class="btn btn-sm btn-primary" style="float: right;"
+                                onclick="location.href='/project/add_project/'">创建
+              </button>
+          </h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
+                  <th>id</th>
+                  <th>名称</th>
+                  <th>描述</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
                 </tr>
               </thead>
               <tbody>
+              {% for project in projects %}
                 <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
+                  <td>{{ project.id }}</td>
+                  <td>{{ project.name }}</td>
+                  <td>{{ project.describe }}</td>
+                  <td>
+                      {% if project.status == True %}
+                      开启
+                      {% else %}
+                      关闭
+                      {% endif %}
+                  </td>
+                  <td>{{ project.create_time }}</td>
                 </tr>
+              {% endfor %}
 
               </tbody>
             </table>
           </div>
+          {% elif type == "add" %}
+          <h1>add</h1>
+          {% endif %}
         </div>
       </div>
     </div>
