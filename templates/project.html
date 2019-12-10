@@ -57,6 +57,7 @@
                   <th>描述</th>
                   <th>状态</th>
                   <th>创建时间</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,6 +74,14 @@
                       {% endif %}
                   </td>
                   <td>{{ project.create_time }}</td>
+                  <td>
+                      <a href="/project/edit_project/{{ project.id }}/">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                      </a>
+                      <a href="/project/delete_project/{{ project.id }}/" style="margin-left: 10px;">
+                        <i class="glyphicon glyphicon-trash"></i>
+                      </a>
+                  </td>
                 </tr>
               {% endfor %}
 
@@ -80,7 +89,48 @@
             </table>
           </div>
           {% elif type == "add" %}
-          <h1>add</h1>
+          <h2 class="sub-header">添加项目</h2>
+              <form class="form-horizontal" method="post" action="/project/add_project/">
+                <div class="control-group">
+                    <label class="control-label">名称</label>
+                    <div class="controls">
+                        <input type="text" name="name" class="input-xlarge">
+                        <span style="color: red">{{ name_error }}</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">描述</label>
+                    <div class="controls">
+                        <div class="textarea">
+                            <textarea name="describe" style="width:178px"> </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">状态</label>
+                    <div class="controls" style="height: 30px;">
+                        <label class="radio inline" style="left: 20px; float: left;">
+                            <input type="radio" value="1" checked="checked" name="status">
+                            开启
+                        </label>
+                        <label class="radio inline" style="left: 80px; float: left;">
+                            <input type="radio" value="0" name="status">
+                            关闭
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-success">保存</button>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+          {% elif type == "edit" %}
+              <h2 class="sub-header">编辑项目</h2>
           {% endif %}
         </div>
       </div>
