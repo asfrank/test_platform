@@ -131,6 +131,11 @@
             </form>
           {% elif type == "edit" %}
               <h2 class="sub-header">编辑项目</h2>
+              <form action="/project/edit_project/{{ pid }}/" method="post">
+                {% csrf_token %}
+                {{ project_form.as_p }}
+                <input type="submit" value="Submit">
+              </form>
           {% endif %}
         </div>
       </div>
