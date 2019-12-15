@@ -19,12 +19,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     # 用户相关
     path('', include('user_app.urls')),
-
     #项目管理
     path('project/', include('project_app.urls')),
     #模块管理
     path('module/', include('module_app.urls')),
+    #用例管理
+    path('testcase/', include('testcase_app.urls')),
 ]

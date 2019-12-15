@@ -40,13 +40,14 @@ INSTALLED_APPS = [
     'project_app.apps.ProjectAppConfig',
     'module_app.apps.ModuleAppConfig',
     'user_app.apps.UserAppConfig',
+    'testcase_app.apps.TestcaseAppConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
