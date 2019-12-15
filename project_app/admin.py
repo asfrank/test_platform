@@ -1,16 +1,11 @@
 from django.contrib import admin
 
-from personal.models.project import Project
-from personal.models.module import Module
+from project_app.models import Project
+
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ["name", "describe", "status", "create_time"]
     search_fields = ["name"]
     list_filter = ["status"]
 
-class ModuleAdmin(admin.ModelAdmin):
-    list_display = ["name", "describe", "create_time", "project"]
-
-
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Module, ModuleAdmin)

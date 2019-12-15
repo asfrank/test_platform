@@ -4,8 +4,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.http import HttpResponseRedirect
 
-from personal.models import Project
-from personal.forms import ProjectForm
+from project_app.models import Project
+from project_app.forms import ProjectForm
 
 
 class ProjectView(View):
@@ -60,6 +60,21 @@ class EditProjectView(View):
             project.status = status
             project.save()
             return HttpResponseRedirect('/project/')
+
+class DeleteProjectView(View):
+    @method_decorator(login_required)
+    def get(self, request, pid):
+        if pid:
+            try:
+                project = Project.objects.get(id=pid)
+            except Project.DoesNotExist:
+                return HttpResponseRedirect('/project/')
+            else:
+                project.delete()
+            return HttpResponseRedirect('/project/')
+        else:
+            return HttpResponseRedirect('/project/')
+
 
 
 

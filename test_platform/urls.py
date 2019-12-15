@@ -14,21 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from personal.views.login_views import LoginView, IndexView, LogoutView
-from personal.views import project_views
-from personal.views import module_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # 首页
-    path('', IndexView.as_view(), name="index"),
-    path('login/', LoginView.as_view(), name="login"),
-    path('logout/', LogoutView.as_view(), name="logout"),
-    path('project/', project_views.ProjectView.as_view(), name="project"),
-    path('project/add_project/', project_views.AddProjectView.as_view(), name="add_project"),
-    path('project/edit_project/<int:pid>/', project_views.EditProjectView.as_view(), name="edit_project"),
-    path('module/', module_views.ModuleView.as_view(), name="module"),
+    # 用户相关
+    path('', include('user_app.urls')),
+
+    #项目管理
+    path('project/', include('project_app.urls')),
+    #模块管理
+    path('module/', include('module_app.urls')),
 ]
