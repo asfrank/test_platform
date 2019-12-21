@@ -47,7 +47,7 @@
               <h2 class="sub-header">postman</h2>
               <div class="input-group">
                     <span class="input-group-addon">* URL</span>
-                    <input id="req_url" type="text" class="form-control" placeholder="请输入url">
+                    <input id="req_url" type="text" class="form-control" placeholder="请输入url" value="http">
               </div>
               <br>
               <div>
@@ -84,11 +84,28 @@
               </div>
               <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
               <div style="float: right;margin-right: 10px;">
-                <button type="button" class="btn btn-primary" onclick="jsFun()">发送</button>
+                <button type="button" class="btn btn-primary" onclick="sendFunc()">发送</button>
               </div>
               <div style="margin-top: 30px;">
                 <p>返回结果：</p>
                 <textarea id="result" class="form-control" rows="10" name=textarea></textarea>
+              </div>
+
+              <div style="float: right;margin-right: 10px;">
+                <button type="button" class="btn btn-primary" onclick="assertFunc()" style="margin-top: 10px;">断言</button>
+              </div>
+              <div style="margin-top: 10px;">
+                    <label>* 断言方法：</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="assert_method" id="equals" value="equals" checked> 相等
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="assert_method" id="contains" value="contains"> 包含
+                    </label>
+              </div>
+              <div style="margin-top: 30px;">
+                <p>断言：</p>
+                <textarea id="assert_text" class="form-control" rows="5" name=textarea></textarea>
               </div>
           {% endif %}
         </div>
@@ -98,7 +115,7 @@
 
 {% block custom_js %}
     <script>
-        function jsFun() {
+        function sendFunc() {
             var url = document.querySelector("#req_url").value;
             var method = document.querySelector("input[name='req_method']:checked").value;
             var header = document.querySelector("#header").value;
@@ -116,7 +133,26 @@
                 parameter: parameter
             },
             function (data, status) {
-                document.querySelector("#result").value = data;
+                document.querySelector("#result").value = data.result;
+            }
+            )
+        }
+
+        function assertFunc() {
+            var result_text = document.querySelector("#result").value;
+            var assert_text = document.querySelector("#assert_text").value;
+            var assert_method = document.querySelector("input[name='assert_method']:checked").value;
+            if (result_text === "" || assert_text === "") {
+                window.alert("要断言的文本不能为空");
+                return;
+            }
+             $.post("/testcase/assert/", {
+                result: result_text,
+                assert: assert_text,
+                assert_method: assert_method
+            },
+            function (data, status) {
+                alert(data.result)
             }
             )
         }
