@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 from project_app.models import Project
 from project_app.forms import ProjectForm
@@ -75,6 +75,16 @@ class DeleteProjectView(View):
         else:
             return HttpResponseRedirect('/project/')
 
+class GetProjectListView(View):
+    '''
+    获取项目列表
+    '''
+    def get(self, request):
+        projects = Project.objects.all()
+        project_list = []
+        for project in projects:
+            project_list.append({"name": project.name, "id": project.id})
+        return JsonResponse({"success": "true", "message": "请求成功", "data": project_list})
 
-
-
+    def post(self, request):
+        return JsonResponse({"success": "false", "message": "请求方式错误"})

@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 
 from module_app.models import Module
 from module_app.forms import ModuleForm
+from project_app.models import Project
 
 
 class ModuleView(View):
@@ -68,6 +69,23 @@ class DeleteModuleView(View):
             else:
                 module.delete()
             return HttpResponseRedirect('/module/')
+
+class GetModuleListView(View):
+    @method_decorator(login_required)
+    def post(self, request):
+        pid = request.POST.get('pid', '')
+        if pid == "":
+            return JsonResponse({"success": "false", "message": "项目id不能为空"})
+        project = Project.objects.filter(id=pid)[0]
+        modules = Module.objects.filter(project=project)
+        module_list = []
+        for module in modules:
+            module_list.append({"name": module.name, "value": module.id})
+        return JsonResponse({"success": "true", "message": "请求成功", "data": module_list})
+
+    def get(self, request):
+        return JsonResponse({"success": "false", "message": "请求方法错误"})
+
 
 
 
