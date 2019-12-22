@@ -76,11 +76,11 @@ class GetModuleListView(View):
         pid = request.POST.get('pid', '')
         if pid == "":
             return JsonResponse({"success": "false", "message": "项目id不能为空"})
-        project = Project.objects.filter(id=pid)[0]
-        modules = Module.objects.filter(project=project)
+        # project = Project.objects.filter(id=pid)[0]
+        modules = Module.objects.filter(project=pid)
         module_list = []
         for module in modules:
-            module_list.append({"name": module.name, "value": module.id})
+            module_list.append({"name": module.name, "id": module.id})
         return JsonResponse({"success": "true", "message": "请求成功", "data": module_list})
 
     def get(self, request):

@@ -115,6 +115,10 @@
                 <label>* 模块：</label>
                 <select class="selectpicker" id="module_list">
                 </select>
+                <div class="input-group" style="margin-top: 15px;margin-bottom: 15px;">
+                    <span class="input-group-addon">* 用例名称</span>
+                    <input id="case_name" type="text" class="form-control" placeholder="请输入用例名">
+                </div>
                 <div style="float: right;margin-right: 10px;">
                   <button type="button" class="btn btn-primary" onclick="saveFunc()">保存</button>
                 </div>
@@ -183,6 +187,52 @@
                 alert(data.result)
             }
             )
+        }
+
+        //保存用例
+        function saveFunc() {
+            //接口的基本数据
+            let url = $("#req_url").val();
+            let method = $('input[name="req_method"]:checked').val();
+            let header = $("#header").val();
+            let parameter_type = $('input[name="par_type"]:checked').val();
+            let parameter_body = $("#parameter").val();
+            // 断言的数据
+            let assert_method = $('input[name="assert_method"]:checked').val();
+            let assert_text = $("#assert_text").val();
+            // 保存的数据
+            let module_id = $('#module_list').val();
+            let case_name = $("#case_name").val();
+            if (url === "") {
+                window.alert("URL不能为空！");
+                return;
+            }else if (assert_method === "" || assert_text === ""){
+                window.alert("断言的类型或参数不能为空！");
+                return;
+            }
+            else if(case_name === ""){
+                window.alert("用例名称不能为空！");
+                return;
+            } else if (module_id === "") {
+                window.alert("所属模块不能为空！");
+                return;
+            }
+            window.alert("parameter:" + parameter);
+            $.post("/testcase/save_case/",
+            {
+                url: url,
+                method: method,
+                header: header,
+                par_type: parameter_type,
+                par_body: parameter_body,
+                ass_type: assert_method,
+                ass_text: assert_text,
+                mid: module_id,
+                name: case_name,
+            },
+            function (data) {
+                console.log("返回的结果", data);
+            });
         }
 
     </script>

@@ -7,6 +7,9 @@ from django.http import JsonResponse
 import requests
 import json
 
+from testcase_app.models import TestCase
+
+
 class TestcaseView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -54,6 +57,7 @@ class CaseDebugView(View):
                     r = requests.post(url, json=payload, headers=header)
         return JsonResponse({"result": r.text})
 
+
 class CaseAssertView(View):
     @method_decorator(login_required)
     def post(self, request):
@@ -72,5 +76,61 @@ class CaseAssertView(View):
             return JsonResponse({"result": "断言失败"})
 
 
+class CaseSaveView(View):
+    '''
+    用例保存
+    '''
 
+    @method_decorator(login_required)
+    def post(self, request):
+        url = request.POST.get('url', '')
+        method = request.POST.get('method', '')
+        header = request.POST.get('header', '')
+        parameter_type = request.POST.get('par_type', '')
+        parameter_body = request.POST.get('par_body', '')
+        assert_type = request.POST.get('ass_type', '')
+        assert_text = request.POST.get('ass_text', '')
+        module_id = request.POST.get('mid', '')
+        name = request.POST.get('name', '')
+        if name == "":
+            return JsonResponse({"success": "false", "message": "用例名称不能为空"})
 
+        if module_id == "":
+            return JsonResponse({"success": "false", "message": "所属的模块不能为空"})
+
+        if assert_type == "" or assert_text == "":
+            return JsonResponse({"success": "false", "message": "断言的类型或文本不能为空"})
+
+        if method == "get":
+            module_number = 1
+        elif method == "post":
+            module_number = 2
+        elif method == "put":
+            module_number = 3
+        elif method == "delete":
+            module_number = 4
+        else:
+            return JsonResponse({"success": "false", "status": 10104, "message": "未知的请求方法"})
+
+        if parameter_type == "form":
+            parameter_number = 1
+        elif parameter_type == "json":
+            parameter_number = 2
+        else:
+            return JsonResponse({"success": "false", "status": 10104, "message": "未知的参数类型"})
+
+        if assert_type == "equals":
+            assert_number = 1
+        elif assert_type == "contains":
+            assert_number = 2
+        else:
+            return JsonResponse({"success": "false", "status": 10104, "message": "未知的断言类型"})
+
+        TestCase.objects.create(name=name, module_id=module_id,
+                                url=url, method=module_number, header=header,
+                                param_type=parameter_number, param=parameter_body,
+                                assert_type=assert_number, assert_text=assert_text)
+        return JsonResponse({"success": "true", "message": "创建成功！"})
+
+    def get(self, request):
+        return JsonResponse({"success": "false", "message": "请求方法错误"})

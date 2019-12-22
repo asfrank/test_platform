@@ -38,11 +38,11 @@ var moduleListInit = function (_cmbModule, pid) {
 	var options = "";
 
 	//创建下拉选项
-	function cmbAddOption(cmb, project_obj) {
-		console.log(project_obj);
+	function cmbAddOption(cmb, module_obj) {
+		console.log(module_obj);
 		var option = document.createElement("option");
-		option.innerHTML = project_obj.name;
-		option.value = project_obj.id;
+		option.innerHTML = module_obj.name;
+		option.value = module_obj.id;
 		cmb.options.add(option);
 		$('#'+_cmbModule).selectpicker('refresh');
 	}
