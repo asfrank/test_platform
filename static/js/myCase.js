@@ -67,3 +67,17 @@ var moduleListInit = function (_cmbModule, pid) {
 	getModuleListInfo();
 
 };
+
+//获取用例信息
+var testCaseInit = function () {
+	let pathname = document.location.pathname;
+	let cid = pathname.split("/")[3];
+	$.post("/testcase/get_case_info/", {
+                cid: cid
+            },
+            function (resp, status) {
+                document.querySelector("#req_url").value = resp.data.url;
+                document.querySelector("#case_name").value = resp.data.name;
+            }
+		)
+};

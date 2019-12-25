@@ -11,10 +11,29 @@ from testcase_app.models import TestCase
 
 
 class TestcaseView(View):
+    '''
+    用例列表
+    '''
     @method_decorator(login_required)
     def get(self, request):
-        return render(request, 'testcase.html', {"type": "debug"})
+        cases = TestCase.objects.all()
+        return render(request, 'case_list.html', {"cases": cases})
 
+class CaseAddView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'case_add.html')
+
+class CaseEditView(View):
+    @method_decorator(login_required)
+    def get(self, request, cid):
+        # case_info = TestCase.objects.filter(id=cid)[0]
+        return render(request, 'case_edit.html')
+
+class CaseDeleteView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'case_add.html')
 
 class CaseDebugView(View):
     @method_decorator(login_required)
@@ -132,5 +151,24 @@ class CaseSaveView(View):
                                 assert_type=assert_number, assert_text=assert_text)
         return JsonResponse({"success": "true", "message": "创建成功！"})
 
+    def get(self, request):
+        return JsonResponse({"success": "false", "message": "请求方法错误"})
+
+class GetCaseInfoView(View):
+    '''
+    获取接口数据
+    '''
+    @method_decorator(login_required)
+    def post(self, request):
+        cid = request.POST.get('cid', '')
+        case = TestCase.objects.filter(id=cid)[0]
+        case_dict = {
+            "id": case.id,
+            "url": case.url,
+            "name": case.name,
+        }
+        return JsonResponse({"success": "true", "message": "请求成功！", "data": case_dict})
+
+    @method_decorator(login_required)
     def get(self, request):
         return JsonResponse({"success": "false", "message": "请求方法错误"})
